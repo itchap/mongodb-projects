@@ -1,0 +1,10 @@
+{
+    "fields": [
+      {
+        "numDimensions": 100,
+        "path": "embeddings",
+        "similarity": "euclidean",
+        "type": "vector"
+      }
+    ]
+  }

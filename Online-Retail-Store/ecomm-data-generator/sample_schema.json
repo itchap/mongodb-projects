@@ -1,0 +1,77 @@
+{
+    "_id": {
+      "$oid": "664918330235c3d02cc8f2c4"
+    },
+    "gender": "Men",
+    "main_category": "Clothing",
+    "sub_category": "T-shirts & Polos",
+    "sku": "B3KUIQ5E",
+    "name": "Paul Smith Product 1451",
+    "price": 347,
+    "description": "A high-quality t-shirts & polos from Paul Smith.",
+    "sizes": [
+      "XL",
+      "L",
+      "M",
+      "XS"
+    ],
+    "colors": [
+      "Green"
+    ],
+    "brand": "Paul Smith",
+    "designer": true,
+    "material": "Synthetic",
+    "images": [
+      "https://img.freepik.com/free-vector/summer-clothes-set_74855-446.jpg"
+    ],
+    "stock": 46,
+    "availability": "In Stock",
+    "rating": 1.6,
+    "reviews": [
+      {
+        "author": "user5129",
+        "comment": "This is a sample review.",
+        "date": {
+          "$date": "2024-05-04T09:03:15.195Z"
+        },
+        "rating": 4
+      },
+      {
+        "author": "user9630",
+        "comment": "This is a sample review.",
+        "date": {
+          "$date": "2024-01-27T13:31:24.195Z"
+        },
+        "rating": 5
+      },
+      {
+        "author": "user1588",
+        "comment": "This is a sample review.",
+        "date": {
+          "$date": "2023-12-11T20:25:00.195Z"
+        },
+        "rating": 5
+      },
+      {
+        "author": "user1703",
+        "comment": "This is a sample review.",
+        "date": {
+          "$date": "2024-02-10T15:05:49.195Z"
+        },
+        "rating": 4
+      }
+    ],
+    "on_sale": true,
+    "pre_owned": true,
+    "condition": "Great",
+    "sponsored": false,
+    "new_in": true,
+    "created_at": {
+      "$date": "2024-04-24T17:11:59.194Z"
+    },
+    "updated_at": {
+      "$date": "2023-12-11T11:44:02.194Z"
+    }
+  }
+
+
