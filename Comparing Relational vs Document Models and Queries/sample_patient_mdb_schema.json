@@ -1,0 +1,141 @@
+{
+  "_id": ObjectId("60c72b2f5f1b2c6d88f0c2b7"),
+  "personal_info": {
+    "first_name": "John",
+    "last_name": "Doe",
+    "dob": "1980-05-15",
+    "gender": "Male",
+    "ssn": "123-45-6789",
+    "marital_status": "Married"
+  },
+  "contact_details": [
+      {
+          "address_type": "home",
+          "email": "john.doe@example.com",
+          "phone": "555-1234",
+          "address": {
+              "street": "123 Main St",
+              "city": "Anytown",
+              "state": "Anystate",
+              "zip": "12345",
+              "country": "USA"
+          }
+      },
+      {
+          "address_type": "emergency",
+          "name": "Jane Doe",
+          "relationship": "Spouse",
+          "phone": "555-5678",
+          "email": "jane.doe@example.com",
+          "address": {
+              "street": "123 Main St",
+              "city": "Anytown",
+              "state": "Anystate",
+              "zip": "12345",
+              "country": "USA"
+          }
+      }
+  ],
+  "insurance_details": {
+    "provider": "Health Insurance Inc.",
+    "policy_number": "HII-12345678",
+    "valid_from": "2020-01-01",
+    "valid_until": "2025-12-31"
+  },
+  "medical_history": [
+    {
+      "condition": "Hypertension",
+      "diagnosed_on": "2015-08-20",
+      "treatment": "Medication",
+      "notes": "Patient advised to reduce salt intake"
+    },
+    {
+      "condition": "Diabetes",
+      "diagnosed_on": "2018-01-15",
+      "treatment": "Insulin",
+      "notes": "Regular blood sugar monitoring required"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Lisinopril",
+      "dose": "10mg",
+      "frequency": "Once daily",
+      "prescribed_by": "Dr. Smith",
+      "start_date": "2015-08-21",
+      "end_date": "Ongoing"
+    },
+    {
+      "name": "Metformin",
+      "dose": "500mg",
+      "frequency": "Twice daily",
+      "prescribed_by": "Dr. Jones",
+      "start_date": "2018-01-16",
+      "end_date": "Ongoing"
+    }
+  ],
+  "allergies": [
+    {
+      "substance": "Penicillin",
+      "reaction": "Rash",
+      "severity": "Moderate",
+      "diagnosed_on": "2010-04-12"
+    }
+  ],
+  "appointments": [
+    {
+      "appointment_id": ObjectId("60c72b2f5f1b2c6d88f0c2b8"),
+      "date": "2023-06-10",
+      "time": "10:00 AM",
+      "doctor": {
+        "name": "Dr. Smith",
+        "specialty": "Cardiologist",
+        "contact": {
+          "phone": "555-1111",
+          "email": "dr.smith@hospital.com"
+        }
+      },
+      "reason": "Regular check-up",
+      "notes": "Blood pressure stable"
+    },
+    {
+      "appointment_id": ObjectId("60c72b2f5f1b2c6d88f0c2b9"),
+      "date": "2023-06-20",
+      "time": "2:00 PM",
+      "doctor": {
+        "name": "Dr. Jones",
+        "specialty": "Endocrinologist",
+        "contact": {
+          "phone": "555-2222",
+          "email": "dr.jones@hospital.com"
+        }
+      },
+      "reason": "Follow-up on test results",
+      "notes": "HbA1c levels improved"
+    }
+  ],
+  "procedures": [
+    {
+      "procedure_name": "Appendectomy",
+      "date": "2010-06-15",
+      "surgeon": {
+        "name": "Dr. Brown",
+        "specialty": "General Surgeon",
+        "contact": {
+          "phone": "555-4444",
+          "email": "dr.brown@hospital.com"
+        }
+      },
+      "outcome": "Successful",
+      "notes": "No complications"
+    }
+  ],
+  "immunizations": [
+    {
+      "vaccine": "Influenza",
+      "date_administered": "2023-09-15",
+      "administered_by": "Nurse Kelly",
+      "notes": "No adverse reactions"
+    }
+  ]
+}
