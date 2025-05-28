@@ -9,25 +9,25 @@ from config import Config
 # Configure logging to provide useful timestamped output for monitoring and debugging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 
-def connect_to_mongodb(uri: str) -> MongoClient:
-    """
-    Establish a connection to MongoDB using the provided URI.
-    Args:
-        uri (str): MongoDB connection URI.
-    Returns:
-        MongoClient: A connected MongoClient instance.
-    Raises:
-        ConnectionFailure: If unable to connect to MongoDB.
-    """
-    try:
-        client = MongoClient(uri)
-        # The following line triggers a connection attempt
-        client.admin.command("ping")
-        logging.info("Connected to MongoDB successfully.")
-        return client
-    except errors.ConnectionFailure as e:
-        logging.error(f"Failed to connect to MongoDB: {e}")
-        raise
+# def connect_to_mongodb(uri: str) -> MongoClient:
+#     """
+#     Establish a connection to MongoDB using the provided URI.
+#     Args:
+#         uri (str): MongoDB connection URI.
+#     Returns:
+#         MongoClient: A connected MongoClient instance.
+#     Raises:
+#         ConnectionFailure: If unable to connect to MongoDB.
+#     """
+#     try:
+#         client = MongoClient(uri)
+#         # The following line triggers a connection attempt
+#         client.admin.command("ping")
+#         logging.info("Connected to MongoDB successfully.")
+#         return client
+#     except errors.ConnectionFailure as e:
+#         logging.error(f"Failed to connect to MongoDB: {e}")
+#         raise
 
 def generate_random_timestamp() -> datetime.datetime:
     """
@@ -103,7 +103,7 @@ def main() -> None:
     num_logs = parse_arguments()
 
     # Connect to MongoDB using credentials and parameters from the external config
-    client = connect_to_mongodb(Config.MONGODB_URI)
+    client = MongoClient(Config.MONGODB_URI)  # Use MongoDB URI from config
     db = client[Config.MONGODB_DATABASE]
     collection = db[Config.MONGODB_COLLECTION]
 

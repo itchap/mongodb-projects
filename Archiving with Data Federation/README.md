@@ -23,66 +23,8 @@ The architecture of the solution consists of the following components:
 
 1. Use the provided Python script to populate the live collection with sample system log data.
 2. Update the MongoDB connection string in the script with your MongoDB Atlas credentials and cluster details.
-3. Run the script to insert the specified number of system logs into the live collection.
+3. Run the logGenerator.py script to insert the specified number of system logs into the live collection.
 
-```python
-from pymongo import MongoClient
-import datetime
-import random
-from dateutil.relativedelta import relativedelta
-import sys
-
-# Connect to MongoDB
-client = MongoClient('mongodb+srv://<username>:<password>@<hostname>/?retryWrites=true&w=majority')
-db = client['test']
-collection = db['sample_logs']
-
-# Function to generate a random system log
-def generate_system_log():
-    log_levels = ["INFO", "WARNING", "ERROR"]
-    log_messages = [
-        "System startup",
-        "Database connection established",
-        "User login failed",
-        "Insufficient disk space",
-        "Network connection lost",
-        "Critical error occurred",
-    ]
-
-    log_level = random.choice(log_levels)
-    log_message = random.choice(log_messages)
-    timestamp = generate_random_timestamp()
-
-    log = {
-        "level": log_level,
-        "message": log_message,
-        "timestamp": timestamp
-    }
-
-    return log
-
-# Function to generate a random timestamp from the past 6 months
-def generate_random_timestamp():
-    current_time = datetime.datetime.now()
-    six_months_ago = current_time - relativedelta(months=6)
-    random_timestamp = random.uniform(six_months_ago.timestamp(), current_time.timestamp())
-    return datetime.datetime.fromtimestamp(random_timestamp)
-
-# Insert generated system logs into MongoDB
-def insert_logs(num_logs):
-    for _ in range(num_logs):
-        log = generate_system_log()
-        collection.insert_one(log)
-
-# Get the number of logs to insert from command line argument
-if len(sys.argv) > 1:
-    num_logs = int(sys.argv[1])
-else:
-    num_logs = 10  # Default value
-
-# Call the insert_logs function to insert the specified number of system logs
-insert_logs(num_logs)
-```
 ``` bash
 python3 logGenerator.py 10000
 ```
