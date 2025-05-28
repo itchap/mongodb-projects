@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&family=Playfair+Display:wght@400;700&display=swap');
+
+body {
+
+}
+
+/* Set the background color for the entire page */
+body {
+    background-color: #00684a; /* Dark green background */
+    color: white; /* Set all text color to white */
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+}
+
+h6 {
+    color: #00ed64;
+}
+
+/* Center the chatbox and set its maximum width */
+.chatbox {
+    max-width: 600px; /* Limit the width of the chatbox */
+    margin: 0 auto;   /* Center the chatbox horizontally */
+}
+
+/* Custom file input styling */
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #023430;
+    color: white;
+    border-radius: 5px;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none; /* Hide the actual file input element */
+}
+
+/* Style for the file name displayed after selection */
+#file-name {
+    color: white; /* Ensure the file name is displayed in white */
+}
+
+/* Chat log container styling */
+.chat-log {
+    height: 450px;            /* Set a fixed height for the chat log */
+    overflow-y: scroll;       /* Enable vertical scrolling for long messages */
+    background-color: white;  /* Set a white background for contrast with the chat messages */
+    color: #00684a; /* Ensure the file name is displayed in white */
+}
+
+/* Basic styling for chat messages */
+.chat-message {
+    margin-bottom: 10px;    /* Space between messages */
+    padding: 10px;          /* Padding inside each message bubble */
+    border-radius: 5px;     /* Rounded corners for message bubbles */
+}
+
+/* User's message styling */
+.chat-message.user {
+    background-color: #e3fcf7; /* Light greenish color for user's messages */
+    text-align: right;         /* Align user's messages to the right */
+}
+
+/* Bot's message styling */
+.chat-message.bot {
+    background-color: #f9ebff; /* Light purple color for bot's messages */
+    text-align: left;          /* Align bot's messages to the left */
+}
+
+/* Style for the question input field */
+#question-input {
+    height: 50px; /* Taller input box for better usability */
+}
+
+/* Markdown-specific styling: heading (h3) inside chat log */
+.chat-log h3 {
+    font-size: 1.05rem;    /* Slightly smaller heading size */
+    font-weight: bold;     /* Bold font for headings */
+    margin-top: 1rem;      /* Space above the heading */
+    margin-bottom: 0.5rem; /* Space below the heading */
+}
+
+/* Markdown-specific styling: bold text (strong) inside chat log */
+.chat-log strong {
+    font-weight: bold; /* Ensure strong tags display as bold text */
+}
+
+/* Styles for ordered (ol) and unordered (ul) lists inside the chat log */
+.chat-log ol,
+.chat-log ul {
+    margin-top: 10px;        /* Space above the list */
+    margin-bottom: 20px;     /* Space below the list */
+    padding-left: 20px;      /* Indent the list from the left side */
+}
+
+/* Styling for ordered lists (ol) */
+.chat-log ol {
+    list-style-type: decimal;  /* Use decimal numbers for ordered lists */
+}
+
+/* Styling for unordered lists (ul) */
+.chat-log ul {
+    list-style-type: disc;     /* Use bullet points for unordered lists */
+}
+
+/* Styling for individual list items (li) */
+.chat-log li {
+    margin-bottom: 8px;       /* Space between each list item for better readability */
+}
+
+/* Add extra spacing below the last list item to separate it from following content */
+.chat-log li:last-child {
+    margin-bottom: 12px;      /* Additional space after the last list item */
+}

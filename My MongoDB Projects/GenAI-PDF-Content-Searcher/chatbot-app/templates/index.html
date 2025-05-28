@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technician Chatbot</title>
+    <!-- Bootstrap CSS for responsive design and default styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for additional styling of the chatbox -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Marked.js for parsing markdown responses from ChatGPT -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <!-- Main container to center the chatbot content -->
+    <div class="container">
+        <!-- Flex container to align the title and logo horizontally and center them -->
+        <div class="d-flex align-items-center justify-content-center mt-5">
+            <!-- Logo and page title -->
+            <img src="https://companieslogo.com/img/orig/MDB.D-9b200438.png?t=1720244492" alt="Logo" class="me-3" style="width: 20px;">
+            <h1 class="text-center">Technician Chatbot</h1>
+        </div>
+
+        <!-- PDF Upload Form centered -->
+        <div class="d-flex flex-column align-items-center mt-4">
+            <h5 class="text-center">Upload PDF Documentation</h5>
+            <form id="uploadForm" enctype="multipart/form-data" class="d-flex justify-content-center">
+                <label class="custom-file-upload me-2">
+                    <input type="file" name="file" id="pdf-file" accept="application/pdf" required>
+                    Choose File
+                </label>
+                <button type="submit" class="btn btn-success">Upload and Process PDF</button>
+            </form>
+            <!-- Display the selected file name here -->
+            <span id="file-name" class="mt-2"></span>
+            <!-- Loading message -->
+            <span id="loading-message" class="mt-2" style="display: none;"><h6>Processing your PDF, please wait...</h6></span>
+        </div>
+
+        <!-- Chatbox container -->
+        <div class="chatbox mt-5">
+            <div id="chat-log" class="chat-log p-3 border rounded"></div>
+
+            <!-- Input for user questions -->
+            <div class="input-group mt-3">
+                <input id="question-input" type="text" class="form-control" placeholder="Ask a question..." aria-label="Technician question">
+                <button class="btn btn-primary" type="button" id="submit-btn">Ask</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery for making AJAX requests and handling interactions -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- JavaScript file for chatbot logic -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
