@@ -27,7 +27,6 @@ The architecture of the solution consists of the following components:
 MONGODB_URI=mongodb+srv://[USERNAME]:[PASSWORD]@[DOMAIN]/?retryWrites=true&w=majority&appName=loggenerator
 ```
 3. Run the logGenerator.py script to insert the specified number of system logs into the live collection.
-
 ``` bash
 python3 logGenerator.py 10000
 ```
@@ -45,57 +44,6 @@ python3 logGenerator.py 10000
 3. Customize the code according to your specific requirements.
 4. Set the schedule for the serverless function to run every hour.
 
-``` javascript
-exports = async function () {
-  const DAYS_TO_SUBTRACT = 160; // Number of days to subtract from the current date
-
-  const currentDate = new Date();
-  const start_date = new Date(currentDate.getTime() - DAYS_TO_SUBTRACT * 24 * 60 * 60 * 1000); // Subtract days from the current date
-
-  // Get the 'logs' collection from the 'prodArchive' database in the 'FederatedArchive' service
-  const collName = context.services.get('FederatedArchive').db('prodArchive').collection('logs');
-
-  // Define the aggregation pipeline for archiving
-  const pipeline = [
-    {
-      $match: {
-        timestamp: {
-          $lt: start_date
-        }
-      }
-    },
-    {
-      $out: {
-        s3: {
-          bucket: 'mongodb-user-demo-bucket',
-          region: 'eu-central-1',
-          filename: `${start_date.toISOString().replace(/:/g, '-')}Z-${currentDate.toISOString().replace(/:/g, '-')}Z`,
-          format: { name: 'json', maxFileSize: '200MiB' }
-        }
-      }
-    }
-  ];
-
-  // Archive data by running the aggregation pipeline
-  await collName.aggregate(pipeline).toArray();
-  console.log('Archive created!');
-
-  // Get the 'sample_logs' collection from the 'test' database in the 'DemoCluster' service
-  const collName2 = context.services.get('DemoCluster').db('test').collection('sample_logs');
-
-  // Define the deletion query to remove archived records
-  const deleteQuery = {
-    timestamp: {
-      $lt: start_date
-    }
-  };
-
-  // Delete archived data
-  const deleteResult = await collName2.deleteMany(deleteQuery);
-  console.log('Deleted', deleteResult.deletedCount, 'records.');
-};
-```
-
 ### Step 5: Query Cold Data from S3 via Data Federation
 
 1. Use the provided Python script to query the cold data stored in the S3 bucket through the federated archive cluster.
@@ -103,74 +51,6 @@ exports = async function () {
 3. Customize the script by setting the desired time range and log level for the query.
 4. Run the script to retrieve the matching documents and aggregated results from the S3 bucket.
 
-```python
-from pymongo import MongoClient
-import datetime
-
-# Connect to the MongoDB server
-client = MongoClient('mongodb://<username>:<password>@<hostname>/?ssl=true&authSource=admin')
-
-# Access the desired database and collection
-db = client.get_database('prodArchive')
-coll = db.get_collection('logs')
-
-print('A query to see all the docs from S3 where there were ERROR logs between midnight and noon on a specified date:')
-
-# Define the time range and level for the query
-start_time = datetime.datetime(2023, 4, 9, 0, 0, 0)  # Replace with your desired start time
-end_time = datetime.datetime(2023, 4, 9, 12, 0, 0)  # Replace with your desired end time
-level = 'ERROR'  # Replace with your desired level
-
-# Perform a separate find query for the specified time range and level
-find_query = {
-    'timestamp': {
-        '$gte': start_time,
-        '$lte': end_time
-    },
-    'level': level
-}
-
-# Execute the find query and retrieve the results
-result = coll.find(find_query)
-
-# Print the matching documents
-for doc in result:
-    print(doc)
-
-print('\nI can also run an aggregation pipeline to group all log levels on the specified date.')
-
-# Define the aggregation pipeline stages
-pipeline = [
-    {
-        '$match': {
-            'timestamp': {
-                '$gte': start_time,
-                '$lte': end_time
-            }
-        }
-    },
-    {
-        '$group': {
-            '_id': '$level',
-            'count': { '$sum': 1 }
-        }
-    },
-    {
-        '$project': {
-            '_id': 0,
-            'level': '$_id',
-            'count': 1
-        }
-    }
-]
-
-# Execute the aggregation pipeline and retrieve the results
-agg_result = coll.aggregate(pipeline)
-
-# Print the aggregated results
-for result in agg_result:
-    print(result)
-```
 
 ## Indexing Recommendations
 
