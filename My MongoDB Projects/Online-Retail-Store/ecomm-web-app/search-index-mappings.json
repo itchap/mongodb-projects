@@ -1,0 +1,76 @@
+// default
+{
+    "mappings": {
+        "dynamic": true
+    }
+}
+
+// autocomplete
+
+{
+    "mappings": {
+      "dynamic": false,
+      "fields": {
+        "name": [
+          {
+            "type": "autocomplete",
+            "analyzer": "lucene.standard",
+            "tokenization": "edgeGram",
+            "minGrams": 3,
+            "maxGrams": 5,
+            "foldDiacritics": false
+          }
+        ],
+        "description": [
+          {
+            "type": "autocomplete",
+            "analyzer": "lucene.standard",
+            "tokenization": "edgeGram",
+            "minGrams": 3,
+            "maxGrams": 5,
+            "foldDiacritics": false
+          }
+        ],
+        "brand": [
+          {
+            "type": "autocomplete",
+            "analyzer": "lucene.standard",
+            "tokenization": "edgeGram",
+            "minGrams": 3,
+            "maxGrams": 5,
+            "foldDiacritics": false
+          }
+        ],
+        "sub_category": [
+          {
+            "type": "autocomplete",
+            "analyzer": "lucene.standard",
+            "tokenization": "edgeGram",
+            "minGrams": 3,
+            "maxGrams": 5,
+            "foldDiacritics": false
+          }
+        ],
+        "material": [
+          {
+            "type": "autocomplete",
+            "analyzer": "lucene.standard",
+            "tokenization": "edgeGram",
+            "minGrams": 3,
+            "maxGrams": 5,
+            "foldDiacritics": false
+          }
+        ],
+        "colors": [
+          {
+            "type": "autocomplete",
+            "analyzer": "lucene.standard",
+            "tokenization": "edgeGram",
+            "minGrams": 3,
+            "maxGrams": 5,
+            "foldDiacritics": false
+          }
+        ]
+      }
+    }
+  }

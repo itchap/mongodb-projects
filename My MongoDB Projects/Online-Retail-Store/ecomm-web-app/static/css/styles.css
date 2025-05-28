@@ -1,0 +1,121 @@
+/* styles.css */
+
+.autocomplete-suggestions {
+    border: 1px solid #ccc;
+    border-top: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    background: white;
+    z-index: 1000;
+}
+
+.autocomplete-suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.autocomplete-suggestion:hover {
+    background-color: #f0f0f0;
+}
+
+.spinner-border {
+    display: block;
+    margin: auto;
+}
+
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.loading-indicator {
+    display: none;
+    text-align: center;
+}
+
+.thumbnail-product {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.thumbnail-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.chat-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+#fashionbot-chat {
+    display: flex;
+    flex-direction: column;
+    transition: none; /* Remove transition for height changes */
+    width: 100%; /* Ensure full width */
+    max-height: 750px; /* Increase max height if needed */
+    height:750px; /* Set initial height */
+}
+
+#chat-messages {
+    flex-grow: 1;
+    overflow-y: auto; /* Allow vertical scrolling */
+    max-height: 750px; /* Adjust max height if needed */
+    height: 750px; /* Set initial height */
+    width: 100%; /* Ensure full width */
+}
+
+#fashionbot-chat .input-group,
+#fashionbot-chat h5,
+#chat-recommendations {
+    width: 100%;
+}
+
+.input-group {
+    margin-top: 10px;
+}
+
+.message-bubble {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+    white-space: pre-wrap; /* Ensure whitespace and newlines are preserved */
+}
+
+.user-message {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+}
+
+.bot-message {
+    background-color: #f1f0f0;
+    align-self: flex-start;
+}
+
+.message-bubble ul {
+    padding-left: 20px;
+}
+
+.message-bubble li {
+    margin-bottom: 5px;
+}
+
+html {
+    scroll-behavior: smooth;
+}

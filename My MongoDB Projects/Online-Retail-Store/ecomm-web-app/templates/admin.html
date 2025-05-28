@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Products</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Admin - Manage Products</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Delete Product</h4>
+                <form id="delete-form">
+                    <div class="form-group">
+                        <label for="delete-product-id">Product ID</label>
+                        <input type="text" class="form-control" id="delete-product-id" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Delete Product</button>
+                </form>
+                <h4 class="mt-5">Delete Multiple Products</h4>
+                <form id="delete-multiple-form">
+                    <div class="form-group">
+                        <label for="delete-filter">Filter (JSON format)</label>
+                        <textarea class="form-control" id="delete-filter" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Delete Products</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h4>Insert or Update Product with JSON</h4>
+                <form id="json-form">
+                    <div class="form-group">
+                        <label for="product-json">Product JSON</label>
+                        <textarea class="form-control" id="product-json" rows="20" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit JSON</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#delete-form').submit(function (event) {
+                event.preventDefault();
+                const productId = $('#delete-product-id').val();
+
+                $.ajax({
+                    url: `/products/${productId}`,
+                    type: 'DELETE',
+                    success: function (response) {
+                        alert('Product deleted successfully');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error deleting product: ' + error);
+                    }
+                });
+            });
+
+            $('#delete-multiple-form').submit(function (event) {
+                event.preventDefault();
+                try {
+                    const filter = JSON.parse($('#delete-filter').val());
+
+                    $.ajax({
+                        url: '/products',
+                        type: 'DELETE',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ filter }),
+                        success: function (response) {
+                            alert(response.message);
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error deleting products: ' + error);
+                        }
+                    });
+                } catch (error) {
+                    alert('Invalid JSON');
+                }
+            });
+
+            $('#json-form').submit(function (event) {
+                event.preventDefault();
+                try {
+                    const data = JSON.parse($('#product-json').val());
+
+                    // Check if product ID is provided for update
+                    if (data._id) {
+                        const productId = data._id;
+                        delete data._id;
+
+                        $.ajax({
+                            url: `/products/${productId}`,
+                            type: 'PUT',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function (response) {
+                                alert('Product updated successfully');
+                            },
+                            error: function (xhr, status, error) {
+                                alert('Error updating product: ' + error);
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: '/products',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(data),
+                            success: function (response) {
+                                alert('Product added successfully');
+                            },
+                            error: function (xhr, status, error) {
+                                alert('Error adding product: ' + error);
+                            }
+                        });
+                    }
+                } catch (error) {
+                    alert('Invalid JSON');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

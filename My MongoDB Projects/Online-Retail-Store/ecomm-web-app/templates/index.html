@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Retail Store</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include custom styles -->
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Online Retail Store</h1>
+        
+        <!-- Loading spinner -->
+        <div id="loading-spinner" class="spinner-border" role="status" style="display: none;">
+            <span class="sr-only">Loading...</span>
+        </div>
+        
+        <!-- Error message container -->
+        <div id="error-message" class="alert alert-danger" style="display: none;" role="alert"></div>
+        
+        <div class="row">
+            <!-- Filter section -->
+            <div class="col-md-3">
+                <h4>Filters</h4>
+                <form id="filters">
+                    <!-- Search input with autocomplete suggestions -->
+                    <div class="form-group position-relative">
+                        <label for="search">Search</label>
+                        <input type="text" class="form-control" id="search">
+                        <ul class="autocomplete-suggestions" id="autocomplete-suggestions"></ul>
+                    </div>
+                    <!-- Gender filter -->
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select class="form-control" id="gender">
+                            <option value="">All</option>
+                            <option value="Men">Men</option>
+                            <option value="Women">Women</option>
+                        </select>
+                    </div>
+                    <!-- Main category filter -->
+                    <div class="form-group">
+                        <label for="main-category">Category</label>
+                        <select class="form-control" id="main-category">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <!-- Sub-category filter -->
+                    <div class="form-group">
+                        <label for="sub-category">Sub Category</label>
+                        <select class="form-control" id="sub-category">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <!-- Brand filter -->
+                    <div class="form-group">
+                        <label for="brand">Brand</label>
+                        <select class="form-control" id="brand">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <!-- Apply Filters button -->
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </form>
+            </div>
+            <!-- Product list section -->
+            <div class="col-md-9">
+                <h4 id="products-title">Products</h4>
+                <div class="row" id="products"></div>
+                <!-- Pagination controls -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center" id="pagination"></ul>
+                </nav>
+                <!-- Product details section -->
+                <div id="product-details" class="mt-5" style="display: none;">
+                    <button class="btn btn-secondary" id="back-to-products">Back to Products</button>
+                    <h4>Product Details</h4>
+                    <div id="product-details-content"></div>
+                    <!-- Talk to FashionBot button -->
+                    <button class="btn btn-primary mt-3" id="talk-to-fashionbot" style="display: none;">Talk to FashionBot</button>
+                    <!-- FashionBot chat section -->
+                    <div id="fashionbot-chat" class="mt-3" style="display: none;">
+                        <h5>Chat with FashionBot</h5>
+                        <div id="chat-messages" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;">
+                            <!-- Chat messages will appear here -->
+                        </div>
+                        <div class="input-group mt-2">
+                            <input type="text" class="form-control" id="chat-input" placeholder="Type your question...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" id="send-chat">Send</button>
+                            </div>
+                        </div>
+                        <!-- Recommendations based on FashionBot query -->
+                        <h5 class="mt-4">Recommendations Based on Your Query</h5>
+                        <div class="thumbnail-container" id="chat-recommendations"></div>
+                    </div>
+                    <!-- Additional recommendations section -->
+                    <h5 class="mt-4">Here are more suggestions for you</h5>
+                    <div class="thumbnail-container" id="recommendations-thumbnails"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Include Bootstrap JS for functionality -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Include custom JavaScript -->
+    <script type="module" src="static/js/main.js"></script>
+</body>
+</html>
