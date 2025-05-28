@@ -103,20 +103,6 @@ aws configure set output json
 2. Enable Data Federation in the federated archive cluster.
 3. Configure the AWS S3 bucket integration with the federated archive cluster. This allows the archiving process to copy data to the S3 bucket using the `$out` operator.
 
-<img width="1201" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/81b4cc31-c405-495d-8514-465dcc49d0b1">
-<img width="573" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/f6f599a6-f8a4-4eea-bc14-ec89de841a93">
-<img width="887" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/e856876a-6b98-4f3d-b004-244e7dc549b4">
-<img width="919" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/bb0f8894-e8bd-49fb-a13c-8d97475ae2bc">
-<img width="916" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/727d6d2b-f54d-4636-bd47-e71b7b9bc6e5">
-<img width="909" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/400c15d5-0c57-4f0d-91ad-999e10917b35">
-<img width="900" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/d4bdfd6c-b579-4ff2-9cd4-22aa5d84ec22">
-<img width="876" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/269e54c3-5e0c-4191-ab57-0c8624a9b83e">
-<img width="750" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/3fa31742-0925-4027-9b2f-14777940ade2">
-<img width="929" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/511c53c4-615b-4f1e-bdc9-a2864e023bd8">
-<img width="863" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/9e0e289b-329d-4af6-aedf-701cd0795630">
-<img width="924" alt="image" src="https://github.com/itchap/mongodb-guides/assets/75799589/d09a1bbe-40fb-4069-a8e2-2c31d500ca21">
-
-
 ### Step 4: Create Serverless Function
 
 1. Create a serverless function in MongoDB Atlas.
