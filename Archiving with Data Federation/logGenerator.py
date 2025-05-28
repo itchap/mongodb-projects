@@ -6,45 +6,30 @@ from dateutil.relativedelta import relativedelta
 from pymongo import MongoClient, errors
 from config import Config
 
-# Configure logging to provide useful timestamped output for monitoring and debugging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
-
-# def connect_to_mongodb(uri: str) -> MongoClient:
-#     """
-#     Establish a connection to MongoDB using the provided URI.
-#     Args:
-#         uri (str): MongoDB connection URI.
-#     Returns:
-#         MongoClient: A connected MongoClient instance.
-#     Raises:
-#         ConnectionFailure: If unable to connect to MongoDB.
-#     """
-#     try:
-#         client = MongoClient(uri)
-#         # The following line triggers a connection attempt
-#         client.admin.command("ping")
-#         logging.info("Connected to MongoDB successfully.")
-#         return client
-#     except errors.ConnectionFailure as e:
-#         logging.error(f"Failed to connect to MongoDB: {e}")
-#         raise
+# Configure logging: INFO for user-facing messages, DEBUG for development/troubleshooting
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s'
+)
 
 def generate_random_timestamp() -> datetime.datetime:
     """
-    Generate a random timestamp within the past 6 months.
+    Generate a random datetime within the past 6 months.
+
     Returns:
-        datetime.datetime: A randomly generated timestamp.
+        datetime.datetime: A random timestamp between now and 6 months ago.
     """
-    current_time = datetime.datetime.now()
-    six_months_ago = current_time - relativedelta(months=6)
-    random_ts = random.uniform(six_months_ago.timestamp(), current_time.timestamp())
-    return datetime.datetime.fromtimestamp(random_ts)
+    now = datetime.datetime.now()
+    six_months_ago = now - relativedelta(months=6)
+    random_epoch = random.uniform(six_months_ago.timestamp(), now.timestamp())
+    return datetime.datetime.fromtimestamp(random_epoch)
 
 def generate_system_log() -> dict:
     """
-    Generate a random system log entry containing a severity level, message, and timestamp.
+    Generate a simulated system log with a random log level, message, and timestamp.
+
     Returns:
-        dict: A dictionary representing a simulated system log.
+        dict: A dictionary representing a synthetic system log entry.
     """
     log_levels = ["INFO", "WARNING", "ERROR"]
     log_messages = [
@@ -53,39 +38,41 @@ def generate_system_log() -> dict:
         "User login failed",
         "Insufficient disk space",
         "Network connection lost",
-        "Critical error occurred",
+        "Critical error occurred"
     ]
 
-    log = {
+    return {
         "level": random.choice(log_levels),
         "message": random.choice(log_messages),
         "timestamp": generate_random_timestamp()
     }
 
-    return log
-
 def insert_logs(collection, num_logs: int) -> None:
     """
     Insert a specified number of randomly generated logs into a MongoDB collection.
+
     Args:
-        collection: A pymongo Collection instance to insert documents into.
-        num_logs (int): Number of log documents to insert.
+        collection: The MongoDB collection object to insert into.
+        num_logs (int): Number of log entries to generate and insert.
     """
-    for i in range(num_logs):
-        log = generate_system_log()
+    logging.info(f"Inserting {num_logs} system logs...")
+    for i in range(1, num_logs + 1):
+        log_entry = generate_system_log()
         try:
-            collection.insert_one(log)
-            logging.debug(f"[{i+1}/{num_logs}] Inserted log: {log}")
+            collection.insert_one(log_entry)
+            logging.debug(f"[{i}/{num_logs}] Inserted log: {log_entry}")
         except errors.PyMongoError as e:
-            logging.error(f"Failed to insert log: {e}")
+            logging.error(f"Error inserting log #{i}: {e}")
+    logging.info("All log entries inserted.")
 
 def parse_arguments() -> int:
     """
-    Parse command-line arguments to determine how many logs to insert.
+    Parse the number of logs to insert from command-line arguments.
+
     Returns:
-        int: Number of logs to insert (default is 10 if not provided).
+        int: Number of logs to insert (default: 10).
     """
-    parser = argparse.ArgumentParser(description="Insert sample system logs into MongoDB.")
+    parser = argparse.ArgumentParser(description="Insert synthetic system logs into MongoDB.")
     parser.add_argument(
         "num_logs",
         type=int,
@@ -93,23 +80,34 @@ def parse_arguments() -> int:
         default=10,
         help="Number of logs to insert (default: 10)"
     )
-    args = parser.parse_args()
-    return args.num_logs
+    return parser.parse_args().num_logs
+
+def get_mongo_collection() -> object:
+    """
+    Connect to MongoDB and return the target collection.
+
+    Returns:
+        Collection: A MongoDB collection object ready for data insertion.
+    """
+    try:
+        client = MongoClient(Config.MONGODB_URI)
+        client.admin.command("ping")  # Ensure the connection is active
+        logging.info("Connected to MongoDB successfully.")
+        return client[Config.MONGODB_DATABASE][Config.MONGODB_COLLECTION]
+    except errors.ConnectionFailure as e:
+        logging.error(f"Could not connect to MongoDB: {e}")
+        raise SystemExit("Terminating script due to MongoDB connection failure.")
 
 def main() -> None:
     """
-    Main entry point of the script. Connects to MongoDB and inserts logs based on user input.
+    Main script logic:
+    - Parse arguments
+    - Connect to MongoDB
+    - Insert generated logs
     """
     num_logs = parse_arguments()
-
-    # Connect to MongoDB using credentials and parameters from the external config
-    client = MongoClient(Config.MONGODB_URI)  # Use MongoDB URI from config
-    db = client[Config.MONGODB_DATABASE]
-    collection = db[Config.MONGODB_COLLECTION]
-
-    logging.info(f"Starting to insert {num_logs} logs into '{Config.MONGODB_COLLECTION}' collection.")
+    collection = get_mongo_collection()
     insert_logs(collection, num_logs)
-    logging.info("Log insertion complete.")
 
 if __name__ == "__main__":
     main()
