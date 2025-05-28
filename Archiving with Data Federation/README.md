@@ -29,16 +29,6 @@ The architecture of the solution consists of the following components:
 python3 logGenerator.py 10000
 ```
 
-``` bash
-curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-sudo installer -pkg AWSCLIV2.pkg -target /
-aws configure set role_arn arn:aws:iam::123456789012:role/defaultrole
-aws configure set source_profile default
-aws configure set role_session_name session_user1
-aws configure set region us-west-2
-aws configure set output json
-```
-
 ### Step 3: Configure Federated Archive Cluster
 
 1. Create a MongoDB Atlas cluster for the federated archive.
