@@ -21,7 +21,7 @@ The architecture of the solution consists of the following components:
 
 ### Step 2: Populate Sample System Log Data
 
-1. Use the provided Python script to populate the live collection with sample system log data.
+1. Use the provided Python [script](https://github.com/itchap/mongodb-projects/blob/main/Archiving%20with%20Data%20Federation/logGenerator.py) to populate the live collection with sample system log data.
 2. Update the MongoDB connection string in the script with your MongoDB Atlas credentials and cluster details.
 3. Run the logGenerator.py script to insert the specified number of system logs into the live collection.
 
