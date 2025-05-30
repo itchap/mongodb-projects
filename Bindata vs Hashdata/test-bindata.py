@@ -7,7 +7,7 @@ from bson.binary import Binary
 import datetime
 
 # Connect to MongoDB
-client = MongoClient('mongodb+srv://itchap:NokiaN900@democluster.0wrhw.mongodb.net/?retryWrites=true&w=majority&appName=BinDataCluster2')
+client = MongoClient('mongodb+srv://[USERNAME]:[PASSWORD]@[DOMAIN]/?retryWrites=true&w=majority&appName=BinDataCluster2')
 
 db = client['test_db']
 collection_binary = db['pii_hashed_bindata']
