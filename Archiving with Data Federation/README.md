@@ -47,6 +47,7 @@ aws configure sso
 aws sts get-caller-identity --profile xyz-id
 ``` 
 
+<img width="922" alt="image" src="https://github.com/user-attachments/assets/4fc3c4da-2884-4890-9741-3ab3e673b3fd" />
 
 3. Configure the AWS S3 bucket integration with the federated archive cluster. This allows the archiving process to copy data to the S3 bucket using the `$out` operator.
 
