@@ -5,7 +5,7 @@ from pymongo import MongoClient
 import datetime
 
 # Connect to MongoDB
-client = MongoClient('mongodb+srv://itchap:NokiaN900@democluster.0wrhw.mongodb.net/?retryWrites=true&w=majority&appName=HashDataCluster1')
+client = MongoClient('mongodb+srv://[USERNAME]:[PASSWORD]@[DOMAIN]/?retryWrites=true&w=majority&appName=HashDataCluster1')
 db = client['test_db']
 collection_string = db['pii_hashed_string']
 collection_string.drop()  # Clean up existing data if re-running
