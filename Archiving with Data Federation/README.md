@@ -33,8 +33,21 @@ python3 logGenerator.py 10000
 
 ### Step 3: Configure Federated Archive Cluster
 
-1. Create a MongoDB Atlas cluster for the federated archive.
-2. Enable Data Federation in the federated archive cluster.
+1. Create a MongoDB Atlas Federated Database Instance for the federated archive.
+2. Select AWS as the cloud provider
+3. Give your Federated Database Instance a name like - s3FederatedArchive
+4. Next add a new Data Souce (i.e. AWS S3 Bucket)
+5. Authorise a AWS IAM Role
+6. Create New Role with the AWS CLI (use a name like atlas-data-archive-role)
+7. Don't forget to install AWS CLI and do an SSO login 
+``` bash
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
+aws configure sso
+aws sts get-caller-identity --profile xyz-id
+``` 
+
+
 3. Configure the AWS S3 bucket integration with the federated archive cluster. This allows the archiving process to copy data to the S3 bucket using the `$out` operator.
 
 ### Step 4: Create Serverless Function
