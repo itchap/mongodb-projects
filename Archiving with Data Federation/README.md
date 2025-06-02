@@ -119,17 +119,8 @@ aws iam put-role-policy \
 
 ## Indexing Recommendations
 
-To optimize the performance of your queries, consider creating appropriate indexes on the fields used in your queries. Based on the provided serverless function and query script, you may consider indexing the following fields:
+To optimize the performance of your live cluster queries during the archive job, consider creating appropriate indexes on the fields used in your filter query. Based on the provided JS function, you may consider indexing the following field:
 
-- For the aggregation pipeline query:
   - `timestamp`: Create an ascending index on the `timestamp` field.
-  - `level`: Create an ascending index on the `level` field.
 
-- For the find query:
-  - `timestamp`: Create an ascending index on the `timestamp` field.
-  - `level`: Create an ascending index on the `level` field.
-
-Make sure to create the indexes in both the live cluster and the federated archive cluster to optimize query performance.
-
-**Note**: The index creation may vary depending on your specific data and query requirements. Consider analyzing the query patterns and workload characteristics to determine the most suitable indexing strategy for your use case.
 
