@@ -75,14 +75,24 @@ aws iam put-role-policy \
 ```
 12. Then validate access is possible
 13. Finally configure the trigger scedule and how you would like the JS Funciton to output the data to the AWS s3 (e.g. Parquet or JSON)
+14. Click on create once you are happy with the configuration
 
 
-### Step 5: Create Serverless Function
+### Step 5: Update the Trigger Function to Archive and Delete 
 
-1. Create a serverless function in MongoDB Atlas.
-2. Use the provided JavaScript code to define the serverless function.
-3. Customize the code according to your specific requirements.
-4. Set the schedule for the serverless function to run every hour.
+1. Go to the Triggers section in Atlas and locate the the Trigger created in the previous section.
+2. Copy the code provided in JavaScript file [(trigger-function.js)](https://github.com/itchap/mongodb-projects/blob/main/Archiving%20with%20Data%20Federation/trigger-function.js)  to define the serverless function
+3. Make sure that the names used in your federation configuration are represented correctly in the script.
+``` script
+  // Configuration constants for services, database, and collection
+  const ARCHIVE_SERVICE = 'awsS3FederatedArchive';  // S3-linked Atlas Data Federation service
+  const CLUSTER_SERVICE = 'DemoCluster';            // Primary Atlas Cluster
+  const DB_NAME = 'system-logs';                    // Database name
+  const COLL_NAME = 'db-server-01';                 // Collection name
+  const BUCKET_NAME = 'atlasfederatedarchive';      // S3 bucket name for archive
+```
+4. Click on Run to test
+5. Click on Save once everything is operational.
 
 ### Step 6: Query Cold Data from S3 via Data Federation
 
