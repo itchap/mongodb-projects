@@ -7,10 +7,11 @@ This is a documentation guide for setting up a MongoDB Atlas Data Archiving solu
 The architecture of the solution consists of the following components:
 
 1. **Live Cluster**: The MongoDB Atlas cluster where the live collection resides.
-2. **Federated Archive**: The MongoDB Atlas cluster used for data federation with AWS S3.
-3. **Atlas Trigger**: A trigger in MongoDB Atlas that monitors changes in the live collection.
-4. **Serverless Function**: A serverless function that is triggered by the Atlas Trigger and performs the archiving of cold data.
-5. **AWS S3 Bucket**: The destination for storing the archived data.
+2. **Federated Archive Pipeline**: The MongoDB Atlas Federated instance used for archiving cold data to AWS S3 parquet files.
+3. **Federated Databse**: The MongoDB Atlas Federated instance used for accessing and querying parquet files in AWS S3.
+4. **Atlas Trigger**: A trigger in MongoDB Atlas that monitors changes in the live collection.
+5. **Serverless Function**: A serverless JS function that is triggered by the Atlas Trigger and performs the sceduled archiving of cold data.
+6. **AWS S3 Bucket**: The destination for storing the archived data.
 
 ## Setup Instructions
 
