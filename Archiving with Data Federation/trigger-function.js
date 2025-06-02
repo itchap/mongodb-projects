@@ -8,11 +8,11 @@ exports = async function () {
   const currentEpochMs = currentDate.getTime(); // Used for generating a unique filename
 
   // Configuration constants for services, database, and collection
-  const ARCHIVE_SERVICE = 's3FederatedArchive';  // S3-linked Atlas Data Federation service
-  const CLUSTER_SERVICE = 'DemoCluster';         // Primary Atlas Cluster
-  const DB_NAME = 'logs';                        // Database name
-  const COLL_NAME = 'database';                  // Collection name
-  const BUCKET_NAME = 'atlas-federated-archive'; // S3 bucket name for archive
+  const ARCHIVE_SERVICE = 'awsS3FederatedArchive';  // S3-linked Atlas Data Federation service
+  const CLUSTER_SERVICE = 'DemoCluster';            // Primary Atlas Cluster
+  const DB_NAME = 'system-logs';                    // Database name
+  const COLL_NAME = 'db-server-01';                 // Collection name
+  const BUCKET_NAME = 'atlasfederatedarchive';      // S3 bucket name for archive
 
   // Define source and archive collection handles
   const archiveColl = context.services.get(ARCHIVE_SERVICE).db(DB_NAME).collection(COLL_NAME);
@@ -47,13 +47,30 @@ exports = async function () {
 
     // Execute the archive pipeline
     await archiveColl.aggregate(archivePipeline).toArray();
-    console.log(`Archive complete: ${fileName}`);
+    console.log(`✅ Archive complete: ${fileName}`);
 
     // Step 2: Delete archived documents from the original collection
     const deleteResult = await sourceColl.deleteMany({ timestamp: { $lt: startDate } });
-    console.log(`Deleted ${deleteResult.deletedCount} archived log records.`);
+    console.log(`🗑️ Deleted ${deleteResult.deletedCount} archived log records.`);
+
+    // ✅ Final success return
+    return {
+      status: "success",
+      db: DB_NAME,
+      collection: COLL_NAME,
+      archivedBefore: startDate,
+      s3Path: fileName,
+      deletedCount: deleteResult.deletedCount
+    };
   } catch (err) {
-    // Catch and log any errors encountered during archive or deletion
-    console.error('Error during archive or delete operation:', err.message);
+    console.error('❌ Error during archive or delete operation:', err.message);
+
+    // ❌ Return error details
+    return {
+      status: "error",
+      message: err.message,
+      db: DB_NAME,
+      collection: COLL_NAME
+    };
   }
 };
