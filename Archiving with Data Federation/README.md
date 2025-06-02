@@ -91,12 +91,28 @@ aws iam put-role-policy \
   const COLL_NAME = 'db-server-01';                 // Collection name
   const BUCKET_NAME = 'atlasfederatedarchive';      // S3 bucket name for archive
 ```
-4. Click on Run to test
-5. Click on Save once everything is operational.
+4. Click on Save
+5. Run to test
+6. Tweak the script further if needed and save.
 
-### Step 6: Query Cold Data from S3 via Data Federation
+### Step 6: Setup Data Federated Database for Accessing Data diretly from in S3 storage
 
-1. Use the provided Python script to query the cold data stored in the S3 bucket through the federated archive cluster.
+1. In the Data Federation section of Atlas, select `Create New Federated Database` and chose the manual option
+2. Select AWS and give the Federated Database Instance a name (e.g. awsS3FederatedDatabase)
+3. Next click on Add Data Sources and select AWS
+4. Select the previously created IAM role
+5. Enter the name of the previously created S3 bucket (e.g. atlasfederatedarchive)
+6. Make sure you select read and write permissions
+7. Specify the previously configured bucket prefix (e.g. databaseLogs/)
+8. Skip the next step as you have previously granted access to the bucket
+9. Now set the s3 uri path to the stored parquet files (e.g. s3://atlasfederatedarchive/databaseLogs/*)
+10. Configure final path folder as any value *
+11. Drag the S3 Store path to the virtual collection
+12. Rename Virtual Database (e.g. virtual-db-system-logs ) and Collection (virtual-coll-db-server-01) accordingly and then click save
+
+### Step 6: Query Cold Data from S3 via the new Atlas Federated Database
+
+1. Use the provided Python script  to query the cold data stored in the S3 bucket through the federated archive cluster.
 2. Update the MongoDB connection string in the script with your MongoDB Atlas credentials and cluster details.
 3. Customize the script by setting the desired time range and log level for the query.
 4. Run the script to retrieve the matching documents and aggregated results from the S3 bucket.

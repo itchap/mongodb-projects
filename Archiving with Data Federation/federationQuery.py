@@ -1,66 +1,105 @@
-from pymongo import MongoClient
-import datetime
+import logging
+from datetime import datetime
+from pymongo import MongoClient, errors
+from config import Config  # Assumes this exists just like in your generator script
 
-# Connect to the MongoDB server
-client = MongoClient('mongodb://<username>:<password>@<hostname>/?ssl=true&authSource=admin')
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s'
+)
 
-# Access the desired database and collection
-db = client.get_database('prodArchive')
-coll = db.get_collection('logs')
+def connect_to_federated_mongo() -> MongoClient:
+    """
+    Establishes connection to the federated MongoDB instance using the URI from Config.
+    Returns:
+        MongoClient instance
+    """
+    try:
+        client = MongoClient(Config.FEDERATED_URI)
+        client.admin.command("ping")
+        logging.info("Connected to Federated MongoDB successfully.")
+        return client
+    except errors.PyMongoError as e:
+        logging.error(f"Failed to connect to Federated MongoDB: {e}")
+        raise SystemExit(1)
 
-print('A query to see all the docs from S3 where there were ERROR logs between midnight and noon on a specified date:')
+def query_error_logs(collection, target_day: datetime):
+    """
+    Find and log all ERROR level logs between midnight and noon on a given date.
+    Args:
+        collection: The MongoDB collection to query.
+        target_day (datetime): The date to filter logs for.
+    """
+    start_time = target_day.replace(hour=0, minute=0, second=0)
+    end_time = target_day.replace(hour=12, minute=0, second=0)
 
-# Define the time range and level for the query
-start_time = datetime.datetime(2023, 4, 9, 0, 0, 0)  # Replace with your desired start time
-end_time = datetime.datetime(2023, 4, 9, 12, 0, 0)  # Replace with your desired end time
-level = 'ERROR'  # Replace with your desired level
+    query = {
+        "timestamp": {
+            "$gte": start_time,
+            "$lte": end_time
+        },
+        "level": "ERROR"
+    }
 
-# Perform a separate find query for the specified time range and level
-find_query = {
-    'timestamp': {
-        '$gte': start_time,
-        '$lte': end_time
-    },
-    'level': level
-}
+    logging.info(f"Querying ERROR logs from {start_time} to {end_time}")
+    results = collection.find(query)
+    found = False
+    for doc in results:
+        logging.info(doc)
+        found = True
+    if not found:
+        logging.info("No ERROR logs found for the specified time range.")
 
-# Execute the find query and retrieve the results
-result = coll.find(find_query)
+def aggregate_log_levels(collection, target_day: datetime):
+    """
+    Run an aggregation pipeline to group log entries by level and count them.
 
-# Print the matching documents
-for doc in result:
-    print(doc)
+    Args:
+        collection: The MongoDB collection to aggregate.
+        target_day (datetime): The date to filter logs for.
+    """
+    start_time = target_day.replace(hour=0, minute=0, second=0)
+    end_time = target_day.replace(hour=23, minute=59, second=59)
 
-print('\nI can also run an aggregation pipeline to group all log levels on the specified date.')
-
-# Define the aggregation pipeline stages
-pipeline = [
-    {
-        '$match': {
-            'timestamp': {
-                '$gte': start_time,
-                '$lte': end_time
+    pipeline = [
+        {
+            '$match': {
+                'timestamp': {
+                    '$gte': start_time,
+                    '$lte': end_time
+                }
+            }
+        },
+        {
+            '$group': {
+                '_id': '$level',
+                'count': { '$sum': 1 }
+            }
+        },
+        {
+            '$project': {
+                '_id': 0,
+                'level': '$_id',
+                'count': 1
             }
         }
-    },
-    {
-        '$group': {
-            '_id': '$level',
-            'count': { '$sum': 1 }
-        }
-    },
-    {
-        '$project': {
-            '_id': 0,
-            'level': '$_id',
-            'count': 1
-        }
-    }
-]
+    ]
 
-# Execute the aggregation pipeline and retrieve the results
-agg_result = coll.aggregate(pipeline)
+    logging.info(f"Aggregating logs from {start_time} to {end_time}")
+    results = collection.aggregate(pipeline)
+    for result in results:
+        logging.info(result)
 
-# Print the aggregated results
-for result in agg_result:
-    print(result)
+def main():
+    target_day = datetime(2024, 12, 24)  # Modify this date as needed
+
+    client = connect_to_federated_mongo()
+    db = client[Config.FEDERATED_DATABASE]
+    collection = db[Config.FEDERATED_COLLECTION]
+
+    query_error_logs(collection, target_day)
+    aggregate_log_levels(collection, target_day)
+
+if __name__ == "__main__":
+    main()

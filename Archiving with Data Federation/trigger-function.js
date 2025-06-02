@@ -19,7 +19,7 @@ exports = async function () {
   const sourceColl = context.services.get(CLUSTER_SERVICE).db(DB_NAME).collection(COLL_NAME);
 
   // Construct S3 filename path following the desired folder structure and timestamp
-  const fileName = `databaseLogs/DemoCluster/${DB_NAME}/${COLL_NAME}/${currentEpochMs}/`;
+  const fileName = `databaseLogs/`;
 
   try {
     console.log(`Starting archive for documents before ${startDate.toISOString()}`);
