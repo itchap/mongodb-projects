@@ -31,34 +31,60 @@ MONGODB_URI=mongodb+srv://[USERNAME]:[PASSWORD]@[DOMAIN]/?retryWrites=true&w=maj
 python3 logGenerator.py 10000
 ```
 
-### Step 3: Configure Federated Archive Cluster
+### Step 3: Create an S3 Bucket
 
-1. Create a MongoDB Atlas Federated Database Instance for the federated archive.
+1. Log in to AWS and go to the S3 service section (ensure you're using the right region in AWS)
+2. Create a new bucket and give it a name like `atlasfederatedarchive` (use the default settings) 
+
+### Step 4: Configure Federated Archive Cluster
+
+1. Create a Federated Database that feeds downstream systems like AWS S3 with your data to Parquet, CSV, BSON, or Extended JSON files
 2. Select AWS as the cloud provider
-3. Give your Federated Database Instance a name like - s3FederatedArchive
-4. Next add a new Data Souce (i.e. AWS S3 Bucket)
-5. Authorise a AWS IAM Role
-6. Create New Role with the AWS CLI (use a name like atlas-data-archive-role)
-7. Don't forget to install AWS CLI and do an SSO login 
+3. Give your Federated Database Instance a name like - awsS3FederatedArchive
+4. Next add the live source cluster and database collection you want to archive
+5. Authorise a new AWS IAM Role or use an exiting one
+6. Follow the instruction to create New Role with the AWS CLI (use a name like atlas-data-archive-role)
+7. Don't forget to install AWS CLI and do an SSO login
 ``` bash
 curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
 sudo installer -pkg AWSCLIV2.pkg -target /
 aws configure sso
 aws sts get-caller-identity --profile xyz-id
-``` 
+```
+Take the sso config details
+If already installed, you will need to establish a new sso session 
+``` bash
+aws sso login --profile xyz-id
+```
+8. Run this command in the terminal to generate a ARN for the new IAM role
+``` bash
+aws iam create-role \                                                                                                                                                          ✔  took 12s  
+ --role-name atlas-federation-archive-role \
+ --assume-role-policy-document file://role-trust-policy.json \
+ --profile xyz
+```
+9. Copy the ARN value and paste it into Atlas and click on validate.
+10. Next add the name of the S3 bucket you created earlier (e.g. atlasfederatedarchive)
+11. Follow the instructions to give Atlas access to the bucket
+``` bash
+aws iam put-role-policy \
+  --role-name atlas-federation-archive-role \
+  --policy-name atlas-federation-archive-role-policy \
+  --policy-document file://adl-s3-policy.json \
+  --profile xyz
+```
+12. Then validate access is possible
+13. Finally configure the trigger scedule and how you would like the JS Funciton to output the data to the AWS s3 (e.g. Parquet or JSON)
 
-<img width="922" alt="image" src="https://github.com/user-attachments/assets/4fc3c4da-2884-4890-9741-3ab3e673b3fd" />
 
-3. Configure the AWS S3 bucket integration with the federated archive cluster. This allows the archiving process to copy data to the S3 bucket using the `$out` operator.
-
-### Step 4: Create Serverless Function
+### Step 5: Create Serverless Function
 
 1. Create a serverless function in MongoDB Atlas.
 2. Use the provided JavaScript code to define the serverless function.
 3. Customize the code according to your specific requirements.
 4. Set the schedule for the serverless function to run every hour.
 
-### Step 5: Query Cold Data from S3 via Data Federation
+### Step 6: Query Cold Data from S3 via Data Federation
 
 1. Use the provided Python script to query the cold data stored in the S3 bucket through the federated archive cluster.
 2. Update the MongoDB connection string in the script with your MongoDB Atlas credentials and cluster details.
