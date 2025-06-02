@@ -112,11 +112,10 @@ aws iam put-role-policy \
 
 ### Step 6: Query Cold Data from S3 via the new Atlas Federated Database
 
-1. Use the provided Python script  to query the cold data stored in the S3 bucket through the federated archive cluster.
-2. Update the MongoDB connection string in the script with your MongoDB Atlas credentials and cluster details.
-3. Customize the script by setting the desired time range and log level for the query.
+1. Use the provided Python script [(federationQuery.py)](https://github.com/itchap/mongodb-projects/blob/main/Archiving%20with%20Data%20Federation/federationQuery.py) to query the cold data stored in the S3 bucket through the federated database instance.
+2. Update the MongoDB connection string in the .env file with your MongoDB Atlas credentials and connection details.
+3. Customise the script by setting the desired time range and log level for the query.
 4. Run the script to retrieve the matching documents and aggregated results from the S3 bucket.
-
 
 ## Indexing Recommendations
 
